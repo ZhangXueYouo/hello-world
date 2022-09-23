@@ -1,0 +1,136 @@
+package prob2ass2;
+
+import java.util.*;
+
+public class DropOutStack
+{
+	Node stackHead;
+	// Initialized a node.
+	int n = 7; //Size fixed at 7
+	int count;
+	// Count records the number of elements that are added to the "stack"
+
+	// chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://cs.colby.edu/courses/S18/cs231/notes/outlines11.
+	// pdf#:~:text=Node-based%20Stack%20%E2%80%A2Another%20way%20to%20implement%20a%20growing,the%20pointer%2Freference%20points%20to%20the%20node%20before%20it.
+
+	DropOutStack()
+	{
+		this.stackHead = null; // Initialize the head as null
+		this.count = 0;
+	}
+
+	public boolean isEmpty()
+	{
+		return this.stackHead == null;
+	}
+
+	public void print()
+	{
+		Node temp = this.stackHead;
+
+		if (stackHead == null)
+		{
+			System.out.println("Stack is now empty!");
+			return;
+		} else
+		{
+			System.out.println("Stack is now:");
+		}
+		while (temp != null)
+		{
+			System.out.print(temp.data + " ");
+			temp = temp.next;
+			// Iterate through the stack
+		}
+		System.out.println();
+
+	}
+
+	public Object pop()
+	{
+		if (this.stackHead == null)
+		{
+			System.out.println("Stack is empty now.");
+			return null;
+		}
+		this.stackHead = this.stackHead.next;
+		this.count--;
+		Object pop = this.stackHead.data;
+		return pop;
+	}
+
+	public void push(Object data)
+	{
+		if (this.count == n)
+		// if(count == capacity),the stack is full
+		{
+			Node temp = this.stackHead;
+			// temp = temp.next;
+			// https://blog.csdn.net/nmsLLCSDN/article/details/115615783
+			while (temp.next.next != null)
+			// loop until reach the end of non-null element
+			{
+				temp = temp.next;
+			}
+			temp.next = null;
+			// Delete the most
+			this.count--;
+			this.push(data);
+			// Decrease count and call push() again
+		} else
+		{
+			Node node = new Node(data);
+			this.count++;
+			// Push in the new element with data value, and increase count.
+			if (this.stackHead == null)
+			{
+				this.stackHead = node;
+				// If the stack is empty then set the head as value "data"
+				return;
+			}
+			node.next = this.stackHead;
+			this.stackHead = node;
+		}
+	}
+
+	public Object peek()
+	{
+		if (this.stackHead == null)
+		{
+			System.out.println("Stack is empty.");
+			return -1;
+		}
+		return this.stackHead.data;
+	}
+
+	class Node
+	{
+		Object data;
+		// Data to save
+		Node next;
+		// The next node to save
+		// finds and returns the next complete token
+		// https://www.javatpoint.com/post/java-scanner-next-method
+
+		Node(Object data)
+		// Must have data to have node
+		{
+			this.data = data;
+			this.next = null;
+		}
+	}
+
+	public static void main(String[] args)
+	{
+		DropOutStack n = new DropOutStack();
+		n.print();
+
+		for (int i = 1; i < 10; i++)
+		{
+			// Add 9 elements, 2 are expected to be dropped out.
+			n.push(i);
+			n.print();
+		}
+		n.print();
+	}
+}
